@@ -17,8 +17,9 @@ def calculate_credit_score(customer):
     """Calculate credit score (0–100) based on historical loans."""
     loans = Loan.objects.filter(customer=customer)
 
+    # No previous loans = perfect score
     if not loans.exists():
-        return 100  # new customers start with perfect score
+        return 100
 
     score = 50
 
@@ -53,6 +54,6 @@ def calculate_credit_score(customer):
     if total_active_debt > customer.approved_limit:
         return 0
 
-    # Ensure final score within bounds
+    # Clamp the score between 0–100
     score = max(0, min(100, score))
     return score
